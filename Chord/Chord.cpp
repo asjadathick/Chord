@@ -37,3 +37,5 @@ void Chord::InitChord(unsigned int n){
     index = new Peer(0, this->chordSize);
     index->setSuccessor(index);
 }
+
+

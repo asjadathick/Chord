@@ -17,8 +17,6 @@
 #include <string>
 
 
-unsigned int hash(std::string input);
-
 class Peer{
 private:
     unsigned long id;
@@ -43,7 +41,5 @@ public:
     
     ~Peer();
 };
-
-
 
 #endif /* Peer_hpp */

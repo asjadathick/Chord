@@ -14,7 +14,7 @@
 #include <iostream>
 #include "Peer.hpp"
 
-unsigned short MAX_CHORD_N_SIZE = 32;
+const unsigned short MAX_CHORD_N_SIZE = 32;
 
 class Chord{
 private:

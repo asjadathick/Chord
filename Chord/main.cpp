@@ -8,10 +8,12 @@
 //  Copyright © 2017 asjad.io. All rights reserved.
 //
 
-#include <iostream>
+#include "Chord.hpp"
 
+using namespace std;
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    Chord chord;
+    chord.InitChord(5);
+    
     return 0;
 }
