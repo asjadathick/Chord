@@ -28,6 +28,7 @@ public:
     void AddPeer(unsigned int id);
     void RemovePeer(unsigned int id);
     void FindKey(unsigned int key);
+	~Chord();
 };
 
 #endif /* Chord_hpp */

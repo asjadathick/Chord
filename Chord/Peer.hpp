@@ -42,8 +42,6 @@ public:
     
     //finger table
 	void updateFingerTable();
-    
-    ~Peer();
 };
 
 #endif /* Peer_hpp */

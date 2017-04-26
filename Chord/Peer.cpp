@@ -58,17 +58,6 @@ void Peer::setSuccessor(Peer *value){
     successor = value;
 }
 
-Peer::~Peer(){
-    Peer *cur = this;
-    Peer *next;
-    while (cur->successor != NULL) {
-        next = cur->successor;
-        delete cur;
-        cur = next;
-    }
-    this->successor = NULL;
-}
-
 //---Finger table---
 void Peer::updateFingerTable(){
 	if (this->fingerTable.size() != this->chordSize) {

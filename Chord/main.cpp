@@ -19,5 +19,7 @@ int main(int argc, const char * argv[]) {
 	chord.AddPeer(7);
 	chord.AddPeer(8);
 	chord.AddPeer(30);
+	chord.InitChord(5);
+	chord.AddPeer(7);
     return 0;
 }

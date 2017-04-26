@@ -25,6 +25,17 @@ Chord::Chord(){
     index = NULL;
 }
 
+Chord::~Chord(){
+	Peer *delPtr = index->getSuccessor();
+	Peer *tmp;
+	do{
+		tmp = delPtr->getSuccessor();
+		delete delPtr;
+		delPtr = tmp;
+	}while (delPtr != index);
+	delete index;
+}
+
 void Chord::InitChord(unsigned int n){
     
     //size check
@@ -40,7 +51,15 @@ void Chord::InitChord(unsigned int n){
     
     //check if re initialised
     if (index != NULL) {
-        delete [] index;
+        //delete allocated peers
+		Peer *delPtr = index->getSuccessor();
+		Peer *tmp;
+		do{
+			tmp = delPtr->getSuccessor();
+			delete delPtr;
+			delPtr = tmp;
+		}while (delPtr != index);
+		delete index;
     }
     
     //new node at 0
