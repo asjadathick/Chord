@@ -2,7 +2,9 @@
 //  main.cpp
 //  Chord
 //
-//  Created by Telstra on 26/4/17.
+//  Created by Asjad Athick on 26/4/17.
+//  Student: 4970512
+//  Compilation: g++
 //  Copyright © 2017 asjad.io. All rights reserved.
 //
 
