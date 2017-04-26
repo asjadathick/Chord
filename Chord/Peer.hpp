@@ -40,6 +40,8 @@ public:
     void setSuccessor(Peer *value);
     
     //finger table
+    
+    ~Peer();
 };
 
 
