@@ -15,6 +15,7 @@ Peer::Peer(unsigned int id, unsigned short chordSize){
     this->id = id;
     this->chordSize = chordSize;
     this->successor = NULL;
+	this->fingerTable.resize(chordSize);
 }
 
 unsigned int Peer::getID(){
@@ -47,7 +48,7 @@ bool Peer::removeData(std::string data){
     return false;
 }
 
-//--Successor
+//---Successor---
 
 Peer* Peer::getSuccessor(){
     return successor;
@@ -68,4 +69,21 @@ Peer::~Peer(){
     this->successor = NULL;
 }
 
+//---Finger table---
+void Peer::updateFingerTable(){
+	if (this->fingerTable.size() != this->chordSize) {
+		this->fingerTable.resize(this->chordSize);
+	}
+
+	for (long i = 0; i < this->fingerTable.size(); ++i) {
+		int upID = ((int)(this->id + pow(2, i)) % (int)(pow(2, chordSize)));
+		Peer *ptr = successor;
+		int hops = 0;
+		while (ptr->getID() < upID || (hops < chordSize)) {
+			ptr = ptr->successor;
+			hops++;
+		}
+		fingerTable[i] = ptr;
+	}
+}
 

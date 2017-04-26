@@ -62,16 +62,21 @@ void Chord::AddPeer(unsigned int id){
     Peer *current = index;
     Peer *prev = index;
     
-    while (current->getID() < id) {
-        prev = current;
-        current = current->getSuccessor();
-    }
-    
+	if (current->getSuccessor() != current) {
+		//not a zero element situation
+		do {
+			prev = current;
+			current = current->getSuccessor();
+		} while ((current->getID() < id) && (current != index));
+	}
+
     Peer *insert = new Peer(id, this->chordSize);
     insert->setSuccessor(prev->getSuccessor());
     prev->setSuccessor(insert);
     
     //TODO: update finger table
+
+	std::cout << "PEER " << id << " ADDED" << std::endl;
 }
 
 void Chord::RemovePeer(unsigned int id){

@@ -14,6 +14,10 @@ using namespace std;
 int main(int argc, const char * argv[]) {
     Chord chord;
     chord.InitChord(5);
-    
+	chord.AddPeer(3);
+    chord.AddPeer(5);
+	chord.AddPeer(7);
+	chord.AddPeer(8);
+	chord.AddPeer(30);
     return 0;
 }
