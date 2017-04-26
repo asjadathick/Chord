@@ -19,17 +19,20 @@
 
 class Peer{
 private:
-    unsigned long id;
+    unsigned int id;
     unsigned short chordSize;
     Peer *successor;
     std::vector<std::string> data;
     std::map<int, Peer> fingerTable;
     
 public:
-    Peer(unsigned long id, unsigned short chordSize);
+    Peer(unsigned int id, unsigned short chordSize);
+    
+    unsigned int getID();
     
     //data
     void addData(std::string data);
+    void addData(std::vector<std::string> data);
     std::vector<std::string> getNodeData();
     bool removeData(std::string data);
     

@@ -16,6 +16,8 @@
 
 const unsigned short MAX_CHORD_N_SIZE = 32;
 
+unsigned int hash(std::string input, unsigned int chordSize);
+
 class Chord{
 private:
     unsigned int chordSize;
@@ -23,6 +25,9 @@ private:
 public:
     Chord();
     void InitChord(unsigned int n);
+    void AddPeer(unsigned int id);
+    void RemovePeer(unsigned int id);
+    void FindKey(unsigned int key);
 };
 
 #endif /* Chord_hpp */

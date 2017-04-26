@@ -11,16 +11,26 @@
 #include "Peer.hpp"
 
 
-Peer::Peer(unsigned long id, unsigned short chordSize){
+Peer::Peer(unsigned int id, unsigned short chordSize){
     this->id = id;
     this->chordSize = chordSize;
     this->successor = NULL;
+}
+
+unsigned int Peer::getID(){
+    return this->id;
 }
 
 //---Data---
 
 void Peer::addData(std::string data){
     this->data.push_back(data);
+}
+
+void Peer::addData(std::vector<std::string> data){
+    for (long i = 0; i < data.size(); ++i) {
+        this->data.push_back(data[i]);
+    }
 }
 
 std::vector<std::string> Peer::getNodeData(){
