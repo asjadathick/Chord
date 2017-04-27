@@ -15,12 +15,17 @@ int main(int argc, const char * argv[]) {
     Chord chord;
     chord.InitChord(5);
 
-	//add
-	chord.AddPeer(3);
-    chord.AddPeer(5);
+	//ins
 	chord.AddPeer(7);
-	chord.AddPeer(8);
-	chord.AddPeer(30);
+    chord.AddPeer(3);
+	chord.RemovePeer(3);
+	chord.AddPeer(12);
+	chord.AddPeer(3);
+	chord.AddPeer(9);
+	chord.RemovePeer(3);
+	chord.AddPeer(17);
+	chord.Insert("THIS IS A TEST");
+	chord.Delete("THIS IS A TEST");
 
 	chord.FindKey(31);
 

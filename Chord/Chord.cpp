@@ -70,13 +70,9 @@ void Chord::InitChord(unsigned int n){
 }
 
 void Chord::AddPeer(unsigned int id){
-    if (id > pow(2, this->chordSize)) {
-        throw std::string("AddPeer: ID for new peer is out of range for Chord size");
-    }
-    
-    if (this->index == NULL) {
-        throw std::string("AddPeer: Chord not initialised");
-    }
+
+	checkInit();
+	checkKeyRange(id);
     
     Peer *current = index;
     Peer *prev = index;
@@ -100,13 +96,9 @@ void Chord::AddPeer(unsigned int id){
 }
 
 void Chord::RemovePeer(unsigned int id){
-    if (id > pow(2, this->chordSize)) {
-        throw std::string("RemovePeer: ID for new peer is out of range for Chord size");
-    }
-    
-    if (this->index == NULL) {
-        throw std::string("RemovePeer: Chord not initialised");
-    }
+
+	checkInit();
+	checkKeyRange(id);
     
     Peer *current = index->getSuccessor();
     Peer *prev = index;
@@ -136,15 +128,55 @@ void Chord::RemovePeer(unsigned int id){
 	std::cout << "PEER " << id << " REMOVED" << std::endl;
 }
 
-void Chord::FindKey(unsigned int key, Peer *foundPeer){
+void Chord::FindKey(unsigned int key){
 
-	if (key > pow(2, this->chordSize)) {
-		throw std::string("FindKey: ID for search key is out of range for Chord size");
+	checkInit();
+	checkKeyRange(key);
+
+	//foundPeer is optional, NULL by default
+	//search always starts at index
+	Peer *ptr = index;
+	bool found = false;
+
+	//special case if index is being searched
+	if (key == ptr->getID()) {
+		found = true;
 	}
 
-	if (this->index == NULL) {
-		throw std::string("FindKey: Chord not initialised");
+	while (!found && (ptr->getSuccessor() != index)) {
+		//look through finger table and select node to jump to
+		std::vector<Peer*> &ft = ptr->getFingerTable();
+		//finger table is going to be ordered asc
+		Peer *jumpKey = ptr->getSuccessor();
+		for (int i = 0; i < ft.size(); ++i) {
+			if (ft[i]->getID() <= key){
+				//max left
+				jumpKey = ft[i];
+			}
+			if (ft[i]->getID() > key) {
+				//too right
+				break;
+			}
+		}
+		std::cout << ptr->getID() << ">";
+		ptr = jumpKey;
+		if (jumpKey->getID() == key || (jumpKey->getID() > key)) {
+			found = true;
+		}
 	}
+
+	std::cout << ptr->getID();
+	if (!found) {
+		ptr = ptr->getSuccessor();
+		std::cout << ">" << ptr->getID() << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+void Chord::FindKey(unsigned int key, Peer *&foundPeer){
+
+	checkInit();
+	checkKeyRange(key);
 
 	//foundPeer is optional, NULL by default
 	//search always starts at index
@@ -184,6 +216,72 @@ void Chord::FindKey(unsigned int key, Peer *foundPeer){
 		std::cout << ">" << foundPeer->getID() << std::endl;
 	}
 	std::cout << std::endl;
+}
+
+void Chord::Insert(std::string value){
+	ChangeData(value, true);
+}
+
+void Chord::Delete(std::string value){
+	ChangeData(value, false);
+}
+
+void Chord::ChangeData(std::string value, bool insert){
+	checkInit();
+
+	unsigned int key = hash(value, this->chordSize);
+	Peer *insPeer = NULL;
+	FindKey(key, insPeer);
+
+	if (insPeer == NULL) {
+		throw std::string("ChangeData: could not find a node to update value");
+	}
+
+	if (insert) {
+		insPeer->addData(value);
+	} else {
+		insPeer->removeData(value);
+	}
+
+	std::cout << (insert ? "INSERTED " : "REMOVED ") << value << " (key=" << key << ") AT " << insPeer->getID() << std::endl;
+}
+
+void Chord::Print(unsigned int key){
+	checkInit();
+	checkKeyRange(key);
+
+	Peer *search = NULL;
+	FindKey(key, search);
+
+	if (search == NULL) {
+		throw std::string("Print: could not find a peer with the key");
+	}
+
+	std::cout << "DATA AT NODE " << key << ":" << std::endl;
+	search->printNodeData();
+	std::cout << "FINGER TABLE OF NODE " << key << ":" << std::endl;
+	search->printFingerTable();
+	
+}
+
+void Chord::Read(std::string filename){
+	std::ifstream input(filename.c_str());
+	if (!input.good()) {
+		throw std::string("Read: File could not be opened for read");
+
+	}
+}
+
+void Chord::checkInit(){
+	if (this->index == NULL) {
+		throw std::string("ChordException: Chord not initialised");
+	}
+}
+
+void Chord::checkKeyRange(unsigned int key){
+	if (key > pow(2, this->chordSize)) {
+		throw std::string("ChordException: ID for search key is out of range for Chord size");
+	}
 }
 
 void Chord::UpdateAllFingerTables(){

@@ -48,6 +48,12 @@ bool Peer::removeData(std::string data){
     return false;
 }
 
+void Peer::printNodeData(){
+	for (long i = 0; i < data.size(); ++i) {
+		std::cout << data[i] << std::endl;
+	}
+}
+
 //---Successor---
 
 Peer* Peer::getSuccessor(){
@@ -79,4 +85,11 @@ void Peer::updateFingerTable(){
 
 std::vector<Peer*>& Peer::getFingerTable(){
 	return fingerTable;
+}
+
+void Peer::printFingerTable(){
+	for (int i = 0; i < fingerTable.size(); ++i) {
+		std::cout << fingerTable[i]->getID() << " ";
+	}
+	std::cout << std::endl;
 }

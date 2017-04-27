@@ -11,6 +11,7 @@
 #ifndef Peer_hpp
 #define Peer_hpp
 
+#include <iostream>
 #include <vector>
 #include <map>
 #include <cmath>
@@ -34,6 +35,7 @@ public:
     void addData(std::string data);
     void addData(std::vector<std::string> data);
     std::vector<std::string> getNodeData();
+	void printNodeData();
     bool removeData(std::string data);
     
     //successor
@@ -43,6 +45,7 @@ public:
     //finger table
 	void updateFingerTable();
 	std::vector<Peer*>& getFingerTable();
+	void printFingerTable();
 };
 
 #endif /* Peer_hpp */
