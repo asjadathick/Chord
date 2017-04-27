@@ -42,6 +42,7 @@ public:
     
     //finger table
 	void updateFingerTable();
+	std::vector<Peer*>& getFingerTable();
 };
 
 #endif /* Peer_hpp */

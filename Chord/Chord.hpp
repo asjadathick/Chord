@@ -27,7 +27,8 @@ public:
     void InitChord(unsigned int n);
     void AddPeer(unsigned int id);
     void RemovePeer(unsigned int id);
-    void FindKey(unsigned int key);
+    void FindKey(unsigned int key, Peer *foundPeer = NULL);
+	void UpdateAllFingerTables();
 	~Chord();
 };
 

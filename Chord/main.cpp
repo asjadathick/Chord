@@ -14,12 +14,21 @@ using namespace std;
 int main(int argc, const char * argv[]) {
     Chord chord;
     chord.InitChord(5);
+
+	//add
 	chord.AddPeer(3);
     chord.AddPeer(5);
 	chord.AddPeer(7);
 	chord.AddPeer(8);
 	chord.AddPeer(30);
-	chord.InitChord(5);
-	chord.AddPeer(7);
+
+	chord.FindKey(31);
+
+	//remove
+//	chord.RemovePeer(8);
+//	chord.RemovePeer(0);
+//	chord.RemovePeer(30);
+//	chord.RemovePeer(3);
+
     return 0;
 }

@@ -94,6 +94,7 @@ void Chord::AddPeer(unsigned int id){
     prev->setSuccessor(insert);
     
     //TODO: update finger table
+	this->UpdateAllFingerTables();
 
 	std::cout << "PEER " << id << " ADDED" << std::endl;
 }
@@ -107,10 +108,10 @@ void Chord::RemovePeer(unsigned int id){
         throw std::string("RemovePeer: Chord not initialised");
     }
     
-    Peer *current = index;
+    Peer *current = index->getSuccessor();
     Peer *prev = index;
     
-    while (current->getID() != id) {
+    while ((current->getID() != id) && current->getSuccessor() != index->getSuccessor()) {
         prev = current;
         current = current->getSuccessor();
     }
@@ -121,6 +122,74 @@ void Chord::RemovePeer(unsigned int id){
     next->addData(current->getNodeData());
     
     prev->setSuccessor(next);
+
+	//check if index* needs to be updated
+	if (current == index) {
+		index = next;
+	}
+
+	delete current;
     
     //TODO: update finger table
+	this->UpdateAllFingerTables();
+
+	std::cout << "PEER " << id << " REMOVED" << std::endl;
+}
+
+void Chord::FindKey(unsigned int key, Peer *foundPeer){
+
+	if (key > pow(2, this->chordSize)) {
+		throw std::string("FindKey: ID for search key is out of range for Chord size");
+	}
+
+	if (this->index == NULL) {
+		throw std::string("FindKey: Chord not initialised");
+	}
+
+	//foundPeer is optional, NULL by default
+	//search always starts at index
+	Peer *ptr = index;
+	bool found = false;
+
+	//special case if index is being searched
+	if (key == ptr->getID()) {
+		found = true;
+	}
+
+	while (!found && (ptr->getSuccessor() != index)) {
+		//look through finger table and select node to jump to
+		std::vector<Peer*> &ft = ptr->getFingerTable();
+		//finger table is going to be ordered asc
+		Peer *jumpKey = ptr->getSuccessor();
+		for (int i = 0; i < ft.size(); ++i) {
+			if (ft[i]->getID() <= key){
+				//max left
+				jumpKey = ft[i];
+			}
+			if (ft[i]->getID() > key) {
+				//too right
+				break;
+			}
+		}
+		std::cout << ptr->getID() << ">";
+		ptr = jumpKey;
+		if (jumpKey->getID() == key || (jumpKey->getID() > key)) {
+			found = true;
+		}
+	}
+	foundPeer = ptr;
+	std::cout << foundPeer->getID();
+	if (!found) {
+		foundPeer = foundPeer->getSuccessor();
+		std::cout << ">" << foundPeer->getID() << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+void Chord::UpdateAllFingerTables(){
+	Peer *cur = index;
+	do{
+		cur->updateFingerTable();
+		cur = cur->getSuccessor();
+	} while(cur != index);
 }

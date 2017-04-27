@@ -60,6 +60,7 @@ void Peer::setSuccessor(Peer *value){
 
 //---Finger table---
 void Peer::updateFingerTable(){
+	//TODO: might need improvements/optimisations
 	if (this->fingerTable.size() != this->chordSize) {
 		this->fingerTable.resize(this->chordSize);
 	}
@@ -68,7 +69,7 @@ void Peer::updateFingerTable(){
 		int upID = ((int)(this->id + pow(2, i)) % (int)(pow(2, chordSize)));
 		Peer *ptr = successor;
 		int hops = 0;
-		while (ptr->getID() < upID || (hops < chordSize)) {
+		while (ptr->getID() < upID && (hops < chordSize)) {
 			ptr = ptr->successor;
 			hops++;
 		}
@@ -76,3 +77,6 @@ void Peer::updateFingerTable(){
 	}
 }
 
+std::vector<Peer*>& Peer::getFingerTable(){
+	return fingerTable;
+}
