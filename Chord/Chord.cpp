@@ -194,10 +194,17 @@ void Chord::FindKey(unsigned int key, Peer *&foundPeer){
 		//finger table is going to be ordered asc
 		Peer *jumpKey = ptr->getSuccessor();
 		for (int i = 0; i < ft.size(); ++i) {
+
 			if (ft[i]->getID() <= key){
 				//max left
 				jumpKey = ft[i];
 			}
+
+			if (jumpKey->getID() == key || (jumpKey->getID() > key)) {
+				found = true;
+				break;
+			}
+
 			if (ft[i]->getID() > key) {
 				//too right
 				break;
@@ -205,9 +212,6 @@ void Chord::FindKey(unsigned int key, Peer *&foundPeer){
 		}
 		std::cout << ptr->getID() << ">";
 		ptr = jumpKey;
-		if (jumpKey->getID() == key || (jumpKey->getID() > key)) {
-			found = true;
-		}
 	}
 	foundPeer = ptr;
 	std::cout << foundPeer->getID();
