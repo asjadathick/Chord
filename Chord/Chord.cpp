@@ -114,28 +114,50 @@ void Chord::RemovePeer(unsigned int id){
 	checkInit();
 	checkKeyRange(id);
     
-    Peer *current = index->getSuccessor();
-    Peer *prev = index;
-    
-    while ((current->getID() != id) && current->getSuccessor() != index->getSuccessor()) {
-        prev = current;
-        current = current->getSuccessor();
-    }
-    
-    Peer *next = current->getSuccessor();
-    
-    //move data
-    next->addData(current->getNodeData());
-    
-    prev->setSuccessor(next);
+//    Peer *current = index->getSuccessor();
+//    Peer *prev = index;
+//    
+//    while ((current->getID() != id) && current->getSuccessor() != index->getSuccessor()) {
+//        prev = current;
+//        current = current->getSuccessor();
+//    }
+//    
+//    Peer *next = current->getSuccessor();
+//    
+//    //move data
+//    next->addData(current->getNodeData());
+//    
+//    prev->setSuccessor(next);
+//
+//	//check if index* needs to be updated
+//	if (current == index) {
+//		index = next;
+//	}
+//
+//	delete current;
 
-	//check if index* needs to be updated
-	if (current == index) {
-		index = next;
+	Peer *delPtr = NULL;
+	FindKey(id, delPtr);
+
+	if (delPtr == NULL) {
+		throw std::string("RemovePeer: Peer with the ID doesn't exist");
 	}
 
-	delete current;
-    
+	//move data
+	delPtr->getSuccessor()->addData(delPtr->getNodeData());
+
+	//break links
+	delPtr->getPredecessor()->setSuccessor(delPtr->getSuccessor());
+	delPtr->getSuccessor()->setPredecessor(delPtr->getPredecessor());
+
+	//check if index needs to be updated
+	if (delPtr == index) {
+		index = delPtr->getSuccessor();
+	}
+
+	//delete node
+	delete delPtr;
+
     //TODO: update finger table
 	this->UpdateAllFingerTables();
 
@@ -202,7 +224,7 @@ void Chord::FindKey(unsigned int key, Peer *&foundPeer){
 		found = true;
 	}
 
-	while (!found && (ptr->getSuccessor() != index)) {
+	while (!found && (ptr != index)) {
 		//look through finger table and select node to jump to
 		std::vector<Peer*> &ft = ptr->getFingerTable();
 		//finger table is going to be ordered asc
