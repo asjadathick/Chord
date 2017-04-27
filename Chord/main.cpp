@@ -13,27 +13,33 @@
 using namespace std;
 int main(int argc, const char * argv[]) {
     Chord chord;
-    chord.InitChord(5);
+//    chord.InitChord(5);
 
 	//ins
-	chord.AddPeer(7);
-    chord.AddPeer(3);
-	chord.RemovePeer(3);
-	chord.AddPeer(12);
-	chord.AddPeer(3);
-	chord.AddPeer(9);
-	chord.RemovePeer(3);
-	chord.AddPeer(17);
-	chord.Insert("THIS IS A TEST");
-	chord.Delete("THIS IS A TEST");
-
-	chord.FindKey(31);
+//	chord.AddPeer(7);
+//    chord.AddPeer(3);
+//	chord.RemovePeer(3);
+//	chord.AddPeer(12);
+//	chord.AddPeer(3);
+//	chord.AddPeer(9);
+//	chord.RemovePeer(3);
+//	chord.AddPeer(17);
+//	chord.Insert("THIS IS A TEST");
+//	chord.Delete("THIS IS A TEST");
+//
+//	chord.FindKey(31);
 
 	//remove
 //	chord.RemovePeer(8);
 //	chord.RemovePeer(0);
 //	chord.RemovePeer(30);
 //	chord.RemovePeer(3);
+
+	if (argc < 2) {
+		throw std::string("Input file not specified in arguments");
+	}
+
+	chord.Read(argv[1]);
 
     return 0;
 }

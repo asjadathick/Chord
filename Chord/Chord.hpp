@@ -25,6 +25,9 @@ private:
 	void ChangeData(std::string value, bool insert=true);
 	void checkInit();
 	void checkKeyRange(unsigned int key);
+
+	//reader functions
+	void  trimCommentsAndTrailingSpace(std::string&);
 public:
     Chord();
     void InitChord(unsigned int n);

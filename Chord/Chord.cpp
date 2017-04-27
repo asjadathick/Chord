@@ -268,8 +268,48 @@ void Chord::Read(std::string filename){
 	std::ifstream input(filename.c_str());
 	if (!input.good()) {
 		throw std::string("Read: File could not be opened for read");
-
 	}
+
+	std::string cmdBuffer;
+	std::string cmd, data;
+	while (getline(input, cmdBuffer)) {
+		//trim comments
+		trimCommentsAndTrailingSpace(cmdBuffer);
+
+		//get cmd and param for exec
+		std::size_t pos = cmdBuffer.find(' ');
+		cmd = cmdBuffer.substr(0, pos);
+		data = cmdBuffer.substr(pos + 1);
+
+		//exec
+		if (cmd == "initchord") {
+			InitChord(std::stoi(data));
+		} else if (cmd == "addpeer"){
+			AddPeer(std::stoi(data));
+		} else if (cmd == "removepeer"){
+			RemovePeer(std::stoi(data));
+		} else if (cmd == "insert"){
+			Insert(data);
+		} else if (cmd == "delete"){
+			Delete(data);
+		} else if (cmd == "print"){
+			Print(std::stoi(data));
+		} else{
+			throw std::string("Read: Input file contains invalid command");
+		}
+	}
+
+	input.close();
+}
+
+//----Helpers---
+
+void Chord::trimCommentsAndTrailingSpace(std::string& in){
+	std::size_t pos = in.find('#');
+	in = in.substr(0, pos -1);
+	pos = in.find_last_not_of(" \r\n\t");
+	if (std::string::npos != pos)
+		in.erase(pos + 1);
 }
 
 void Chord::checkInit(){
