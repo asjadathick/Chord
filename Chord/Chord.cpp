@@ -65,6 +65,7 @@ void Chord::InitChord(unsigned int n){
     //new node at 0
     index = new Peer(0, this->chordSize);
     index->setSuccessor(index);
+	index->setPredecessor(index);
     
     //TODO: update finger table
 }
@@ -73,22 +74,35 @@ void Chord::AddPeer(unsigned int id){
 
 	checkInit();
 	checkKeyRange(id);
-    
-    Peer *current = index;
-    Peer *prev = index;
-    
-	if (current->getSuccessor() != current) {
-		//not a zero element situation
-		do {
-			prev = current;
-			current = current->getSuccessor();
-		} while ((current->getID() < id) && (current != index));
+
+	Peer *insert;
+	FindKey(id, insert);
+
+	if (insert->getID() == id) {
+		throw std::string("AddPeer: Node with that ID already exists");
 	}
 
-    Peer *insert = new Peer(id, this->chordSize);
-    insert->setSuccessor(prev->getSuccessor());
-    prev->setSuccessor(insert);
-    
+	Peer *newNode = new Peer(id, this->chordSize);
+
+	if (insert->getID() > id) {
+		//new node before insert node (new node is smaller)
+		if (insert == index) {
+			//first node
+			index = newNode;
+		}
+		newNode->setSuccessor(insert);
+		newNode->setPredecessor(insert->getPredecessor());
+		insert->getPredecessor()->setSuccessor(newNode);
+		insert->setPredecessor(newNode);
+
+	} else {
+		//new node is bigger
+		newNode->setSuccessor(insert->getSuccessor());
+		newNode->setPredecessor(insert);
+		insert->getSuccessor()->setPredecessor(newNode);
+		insert->setSuccessor(newNode);
+	}
+
     //TODO: update finger table
 	this->UpdateAllFingerTables();
 
@@ -168,7 +182,7 @@ void Chord::FindKey(unsigned int key){
 	std::cout << ptr->getID();
 	if (!found) {
 		ptr = ptr->getSuccessor();
-		std::cout << ">" << ptr->getID() << std::endl;
+		std::cout << ">" << ptr->getID();
 	}
 	std::cout << std::endl;
 }

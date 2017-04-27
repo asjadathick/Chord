@@ -23,6 +23,7 @@ private:
     unsigned int id;
     unsigned short chordSize;
     Peer *successor;
+	Peer *predecessor;
     std::vector<std::string> data;
     std::vector<Peer*> fingerTable;
     
@@ -41,6 +42,10 @@ public:
     //successor
     Peer *getSuccessor();
     void setSuccessor(Peer *value);
+
+	//predecessor
+	Peer *getPredecessor();
+	void setPredecessor(Peer *value);
     
     //finger table
 	void updateFingerTable();

@@ -61,7 +61,17 @@ Peer* Peer::getSuccessor(){
 }
 
 void Peer::setSuccessor(Peer *value){
-    successor = value;
+    this->successor = value;
+}
+
+//---Predecessor---
+
+Peer* Peer::getPredecessor(){
+	return predecessor;
+}
+
+void Peer::setPredecessor(Peer *value){
+	this->predecessor = value;
 }
 
 //---Finger table---
