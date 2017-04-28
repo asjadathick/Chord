@@ -29,9 +29,10 @@ void Peer::addData(std::string data){
 }
 
 void Peer::addData(std::vector<std::string> data){
-    for (long i = 0; i < data.size(); ++i) {
-        this->data.push_back(data[i]);
+    for (long i = 0; i < this->data.size(); ++i) {
+        data.push_back(this->data[i]);
     }
+	this->data = data;
 }
 
 std::vector<std::string> Peer::getNodeData(){

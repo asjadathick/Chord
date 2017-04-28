@@ -174,7 +174,7 @@ void Chord::FindKey(unsigned int key, Peer *&foundPeer){
 
 
 		//check if only 1 peer in chord?
-		if (ptr->getSuccessor() == ptr) {
+		if (ptr->getSuccessor() == ptr || ptr->getID() == key) {
 			break;
 		}
 
@@ -248,7 +248,7 @@ void Chord::ChangeData(std::string value, bool insert){
 		insPeer->removeData(value);
 	}
 
-	std::cout << (insert ? "INSERTED " : "REMOVED ") << value << " (key=" << key << ") AT " << insPeer->getID() << std::endl;
+	std::cout << (insert ? "INSERTED " : "REMOVED ") << value << " (key=" << key << ") " << (insert ? "AT" : "FROM") << " " << insPeer->getID() << std::endl;
 }
 
 void Chord::Print(unsigned int key){
@@ -262,7 +262,7 @@ void Chord::Print(unsigned int key){
 		throw std::string("Print: could not find a peer with the key");
 	}
 
-	std::cout << "DATA AT NODE " << key << ":" << std::endl;
+	std::cout << "DATA AT INDEX NODE " << key << ":" << std::endl;
 	search->printNodeData();
 	std::cout << "FINGER TABLE OF NODE " << key << ":" << std::endl;
 	search->printFingerTable();
