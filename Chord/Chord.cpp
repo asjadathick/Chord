@@ -164,51 +164,6 @@ void Chord::RemovePeer(unsigned int id){
 	std::cout << "PEER " << id << " REMOVED" << std::endl;
 }
 
-void Chord::FindKey(unsigned int key){
-
-	checkInit();
-	checkKeyRange(key);
-
-	//foundPeer is optional, NULL by default
-	//search always starts at index
-	Peer *ptr = index;
-	bool found = false;
-
-	//special case if index is being searched
-	if (key == ptr->getID()) {
-		found = true;
-	}
-
-	while (!found && (ptr->getSuccessor() != index)) {
-		//look through finger table and select node to jump to
-		std::vector<Peer*> &ft = ptr->getFingerTable();
-		//finger table is going to be ordered asc
-		Peer *jumpKey = ptr->getSuccessor();
-		for (int i = 0; i < ft.size(); ++i) {
-			if (ft[i]->getID() <= key){
-				//max left
-				jumpKey = ft[i];
-			}
-			if (ft[i]->getID() > key) {
-				//too right
-				break;
-			}
-		}
-		std::cout << ptr->getID() << ">";
-		ptr = jumpKey;
-		if (jumpKey->getID() == key || (jumpKey->getID() > key)) {
-			found = true;
-		}
-	}
-
-	std::cout << ptr->getID();
-	if (!found) {
-		ptr = ptr->getSuccessor();
-		std::cout << ">" << ptr->getID();
-	}
-	std::cout << std::endl;
-}
-
 void Chord::FindKey(unsigned int key, Peer *&foundPeer){
 
 	checkInit();
@@ -253,7 +208,7 @@ void Chord::FindKey(unsigned int key, Peer *&foundPeer){
 	std::cout << foundPeer->getID();
 	if (!found) {
 		foundPeer = foundPeer->getSuccessor();
-		std::cout << ">" << foundPeer->getID() << std::endl;
+		std::cout << ">" << foundPeer->getID();
 	}
 	std::cout << std::endl;
 }

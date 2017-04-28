@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A5FB5DA71EB058A300906886 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5FB5DA61EB058A300906886 /* main.cpp */; };
 		A5FB5DAF1EB0678E00906886 /* Peer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5FB5DAD1EB0678E00906886 /* Peer.cpp */; };
 		A5FB5DB31EB0736700906886 /* Chord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5FB5DB11EB0736700906886 /* Chord.cpp */; };
+		A5FB5DD41EB3112500906886 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5FB5DD31EB3112500906886 /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,11 +26,11 @@
 
 /* Begin PBXFileReference section */
 		A5FB5DA31EB058A300906886 /* Chord */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chord; sourceTree = BUILT_PRODUCTS_DIR; };
-		A5FB5DA61EB058A300906886 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = /Users/Asjad/Documents/CSCI319/Chord/Chord/main.cpp; sourceTree = "<absolute>"; };
 		A5FB5DAD1EB0678E00906886 /* Peer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Peer.cpp; sourceTree = "<group>"; };
 		A5FB5DAE1EB0678E00906886 /* Peer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Peer.hpp; sourceTree = "<group>"; };
 		A5FB5DB11EB0736700906886 /* Chord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chord.cpp; sourceTree = "<group>"; };
 		A5FB5DB21EB0736700906886 /* Chord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Chord.hpp; sourceTree = "<group>"; };
+		A5FB5DD31EB3112500906886 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +63,7 @@
 		A5FB5DA51EB058A300906886 /* Chord */ = {
 			isa = PBXGroup;
 			children = (
-				A5FB5DA61EB058A300906886 /* main.cpp */,
+				A5FB5DD31EB3112500906886 /* main.cpp */,
 				A5FB5DAD1EB0678E00906886 /* Peer.cpp */,
 				A5FB5DAE1EB0678E00906886 /* Peer.hpp */,
 				A5FB5DB11EB0736700906886 /* Chord.cpp */,
@@ -129,9 +129,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5FB5DA71EB058A300906886 /* main.cpp in Sources */,
 				A5FB5DB31EB0736700906886 /* Chord.cpp in Sources */,
 				A5FB5DAF1EB0678E00906886 /* Peer.cpp in Sources */,
+				A5FB5DD41EB3112500906886 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
