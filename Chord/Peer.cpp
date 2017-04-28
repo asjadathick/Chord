@@ -83,13 +83,46 @@ void Peer::updateFingerTable(){
 
 	for (long i = 0; i < this->fingerTable.size(); ++i) {
 		int upID = ((int)(this->id + pow(2, i)) % (int)(pow(2, chordSize)));
-		Peer *ptr = successor;
-		int hops = 0;
-		while (ptr->getID() < upID && (hops < chordSize)) {
-			ptr = ptr->successor;
-			hops++;
-		}
-		fingerTable[i] = ptr;
+        unsigned long previousId = this->id;
+        unsigned long nextId = this->successor->id;
+        
+        Peer* currentPeer = this;
+        Peer* nextPeer = this->successor;
+        
+        Peer* finalPeer = NULL;
+        
+        do {
+            
+            // Check to see that they are in order
+            // (So we arent coming back around the circle)
+            if (previousId < nextId) {
+                
+                // Check if in between
+                if (upID > previousId && upID <= nextId) {
+                    finalPeer = nextPeer;
+                    break;
+                }
+                
+            } else {
+                
+                if (upID >= previousId || upID <= nextId) {
+                    finalPeer = nextPeer;
+                    break;
+                }
+                
+            }
+            
+            // Keep circulating
+            currentPeer = currentPeer->successor;
+            nextPeer = nextPeer->successor;
+            
+            // Update upID's
+            previousId = currentPeer->id;
+            nextId = nextPeer->id;
+            
+        } while (currentPeer != this);
+        
+		fingerTable[i] = finalPeer;
 	}
 }
 
