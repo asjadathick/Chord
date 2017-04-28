@@ -68,6 +68,7 @@ void Chord::InitChord(unsigned int n){
 	index->setPredecessor(index);
     
     //TODO: update finger table
+	UpdateAllFingerTables();
 }
 
 void Chord::AddPeer(unsigned int id){
@@ -113,28 +114,6 @@ void Chord::RemovePeer(unsigned int id){
 
 	checkInit();
 	checkKeyRange(id);
-    
-//    Peer *current = index->getSuccessor();
-//    Peer *prev = index;
-//    
-//    while ((current->getID() != id) && current->getSuccessor() != index->getSuccessor()) {
-//        prev = current;
-//        current = current->getSuccessor();
-//    }
-//    
-//    Peer *next = current->getSuccessor();
-//    
-//    //move data
-//    next->addData(current->getNodeData());
-//    
-//    prev->setSuccessor(next);
-//
-//	//check if index* needs to be updated
-//	if (current == index) {
-//		index = next;
-//	}
-//
-//	delete current;
 
 	Peer *delPtr = NULL;
 	FindKey(id, delPtr);
