@@ -77,6 +77,7 @@ void Peer::setPredecessor(Peer *value){
 
 //---Finger table---
 void Peer::updateFingerTable(){
+
 	//TODO: might need improvements/optimisations
 	if (this->fingerTable.size() != this->chordSize) {
 		this->fingerTable.resize(this->chordSize);
@@ -84,46 +85,26 @@ void Peer::updateFingerTable(){
 
 	for (long i = 0; i < this->fingerTable.size(); ++i) {
 		int upID = ((int)(this->id + pow(2, i)) % (int)(pow(2, chordSize)));
-        unsigned long previousId = this->id;
-        unsigned long nextId = this->successor->id;
         
-        Peer* currentPeer = this;
-        Peer* nextPeer = this->successor;
-        
-        Peer* finalPeer = NULL;
+        Peer *ptr = this, *succ = NULL;
         
         do {
-            
-            // Check to see that they are in order
-            // (So we arent coming back around the circle)
-            if (previousId < nextId) {
-                
-                // Check if in between
-                if (upID > previousId && upID <= nextId) {
-                    finalPeer = nextPeer;
+            if (ptr->id < ptr->successor->id) {
+                if ((upID > ptr->id) && (upID <= ptr->successor->id)) {
+                    succ = ptr->getSuccessor();
                     break;
                 }
-                
             } else {
-                
-                if (upID >= previousId || upID <= nextId) {
-                    finalPeer = nextPeer;
+                if (upID >= this->id || upID <= this->successor->id) {
+                    succ = ptr->getSuccessor();
                     break;
                 }
-                
             }
             
-            // Keep circulating
-            currentPeer = currentPeer->successor;
-            nextPeer = nextPeer->successor;
-            
-            // Update upID's
-            previousId = currentPeer->id;
-            nextId = nextPeer->id;
-            
-        } while (currentPeer != this);
-        
-		fingerTable[i] = finalPeer;
+            ptr = ptr->successor;
+        } while (ptr != this);
+
+		fingerTable[i] = succ;
 	}
 }
 
