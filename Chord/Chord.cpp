@@ -85,7 +85,10 @@ void Chord::AddPeer(unsigned int id){
 
 	Peer *newNode = new Peer(id, this->chordSize);
 
-	if (insert->getID() > id) {
+	if ((insert->getID() > id)) {
+		if ((insert->getPredecessor()->getID() > id)) {
+			insert = insert->getPredecessor();
+		}
 		//new node before insert node (new node is smaller)
 		if (insert == index) {
 			//first node
@@ -98,6 +101,9 @@ void Chord::AddPeer(unsigned int id){
 
 	} else {
 		//new node is bigger
+		if (insert->getPredecessor()->getID() < id) {
+			insert = insert->getPredecessor();
+		}
 		newNode->setSuccessor(insert->getSuccessor());
 		newNode->setPredecessor(insert);
 		insert->getSuccessor()->setPredecessor(newNode);
@@ -148,48 +154,73 @@ void Chord::FindKey(unsigned int key, Peer *&foundPeer){
 	checkInit();
 	checkKeyRange(key);
 
-	//foundPeer is optional, NULL by default
-	//search always starts at index
 	Peer *ptr = index;
 	bool found = false;
+	bool print;
 
-	//special case if index is being searched
-	if (key == ptr->getID()) {
-		found = true;
-	}
+	do{
+		print = true;
 
-	while (!found && (ptr != index)) {
-		//look through finger table and select node to jump to
-		std::vector<Peer*> &ft = ptr->getFingerTable();
-		//finger table is going to be ordered asc
-		Peer *jumpKey = ptr->getSuccessor();
-		for (int i = 0; i < ft.size(); ++i) {
-
-			if (ft[i]->getID() <= key){
-				//max left
-				jumpKey = ft[i];
-			}
-
-			if (jumpKey->getID() == key || (jumpKey->getID() > key)) {
-				found = true;
-				break;
-			}
-
-			if (ft[i]->getID() > key) {
-				//too right
-				break;
-			}
+		if ((ptr->getID() >= key) && (ptr->getPredecessor()->getID() < key)) {
+			found = true;
+			print = false;
+			break;
 		}
-		std::cout << ptr->getID() << ">";
-		ptr = jumpKey;
-	}
+
+		//print visit
+		if (print) {
+			std::cout << ptr->getID() << ">";
+		}
+
+
+		//check if only 1 peer in chord?
+		if (ptr->getSuccessor() == ptr) {
+			break;
+		}
+
+		//check if it's a join position
+		if (ptr->getID() > ptr->getSuccessor()->getID()) {
+			ptr = ptr->getSuccessor();
+			break;
+		}
+
+		//check matches
+		if ((ptr->getID() >= key) && (ptr->getPredecessor()->getID() < key)) {
+			found = true;
+			print = false;
+			break;
+		} else {
+			//look in ft for largest but less than key peer
+			std::vector<Peer*> ft = ptr->getFingerTable();
+			std::sort(ft.begin(), ft.end(), Peer::ascSort);
+			Peer *tmp = NULL;
+			for (int i = 0; i < ft.size(); ++i) {
+				if ((ft[i]->getID() <= key) && (ft[i]->getID() >= ptr->getID())) {
+					if (tmp == NULL) {
+						tmp = ft[i];
+					} else if (ft[i]->getID() > tmp->getID()){
+						tmp = ft[i];
+					}
+				}
+			}
+
+			if (tmp == ptr) {
+				ptr = ptr->getSuccessor();
+				break;
+			}
+
+			if (tmp == NULL) {
+				tmp = ptr->getSuccessor();
+			}
+
+			ptr = tmp;
+			//or pass to successor if none found
+		}
+	} while (!found);
+
+	//print last
+	std::cout << ptr->getID() << std::endl;
 	foundPeer = ptr;
-	std::cout << foundPeer->getID();
-	if (!found) {
-		foundPeer = foundPeer->getSuccessor();
-		std::cout << ">" << foundPeer->getID();
-	}
-	std::cout << std::endl;
 }
 
 void Chord::Insert(std::string value){

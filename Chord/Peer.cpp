@@ -136,3 +136,7 @@ void Peer::printFingerTable(){
 	}
 	std::cout << std::endl;
 }
+
+bool Peer::ascSort(const Peer *p1, const Peer *p2){
+	return (p1->id < p2->id);
+}

@@ -51,6 +51,9 @@ public:
 	void updateFingerTable();
 	std::vector<Peer*>& getFingerTable();
 	void printFingerTable();
+
+	//comparison sort operator
+	static bool ascSort(const Peer*, const Peer*);
 };
 
 #endif /* Peer_hpp */
