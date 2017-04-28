@@ -133,7 +133,7 @@ std::vector<Peer*>& Peer::getFingerTable(){
 
 void Peer::printFingerTable(){
 	for (int i = 0; i < fingerTable.size(); ++i) {
-		std::cout << fingerTable[i]->getID() << " ";
+		std::cout << fingerTable[i]->getID() << (i == (fingerTable.size() - 1) ? "": " ");
 	}
 	std::cout << std::endl;
 }
