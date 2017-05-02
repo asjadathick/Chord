@@ -13,6 +13,7 @@
 
 #include <fstream>
 #include <algorithm>
+#include <sstream>
 #include "Peer.hpp"
 
 const unsigned short MAX_CHORD_N_SIZE = 32;

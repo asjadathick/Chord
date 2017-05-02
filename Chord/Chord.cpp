@@ -286,19 +286,24 @@ void Chord::Read(std::string filename){
 		cmd = cmdBuffer.substr(0, pos);
 		data = cmdBuffer.substr(pos + 1);
 
+		std::stringstream ss;
+		ss << data;
+		int intData;
+		ss >> intData;
+
 		//exec
 		if (cmd == "initchord") {
-			InitChord(std::stoi(data));
+			InitChord(intData);
 		} else if (cmd == "addpeer"){
-			AddPeer(std::stoi(data));
+			AddPeer(intData);
 		} else if (cmd == "removepeer"){
-			RemovePeer(std::stoi(data));
+			RemovePeer(intData);
 		} else if (cmd == "insert"){
 			Insert(data);
 		} else if (cmd == "delete"){
 			Delete(data);
 		} else if (cmd == "print"){
-			Print(std::stoi(data));
+			Print(intData);
 		} else{
 			throw std::string("Read: Input file contains invalid command");
 		}
