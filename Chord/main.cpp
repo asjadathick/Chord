@@ -12,14 +12,14 @@
 
 using namespace std;
 int main(int argc, const char * argv[]) {
-    Chord chord;
 
 	try {
 		if (argc < 2) {
 			throw std::string("Input file not specified in arguments");
+		} else {
+			Chord chord;
+			chord.Read(argv[1]);
 		}
-
-		chord.Read(argv[1]);
 	} catch (std::string ex) {
 		cout << "Program ended with exception: " << ex << std::endl;
 	}
