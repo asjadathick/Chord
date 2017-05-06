@@ -4,7 +4,7 @@
 //
 //  Created by Asjad Athick on 26/4/17.
 //  Student: 4970512
-//  Compilation: g++
+//  Compilation: g++ -o CHORD main.cpp Peer.cpp Chord.cpp
 //  Copyright © 2017 asjad.io. All rights reserved.
 //
 

@@ -4,7 +4,7 @@
 //
 //  Created by Asjad Athick on 26/4/17.
 //  Student: 4970512
-//  Compilation: g++
+//  Compilation: g++ -o CHORD main.cpp Peer.cpp Chord.cpp
 //  Copyright © 2017 asjad.io. All rights reserved.
 //
 
@@ -67,7 +67,6 @@ void Chord::InitChord(unsigned int n){
     index->setSuccessor(index);
 	index->setPredecessor(index);
     
-    //TODO: update finger table
 	UpdateAllFingerTables();
 }
 
@@ -110,7 +109,6 @@ void Chord::AddPeer(unsigned int id){
 		insert->setSuccessor(newNode);
 	}
 
-    //TODO: update finger table
 	this->UpdateAllFingerTables();
 
 	std::cout << "PEER " << id << " ADDED" << std::endl;
@@ -143,7 +141,6 @@ void Chord::RemovePeer(unsigned int id){
 	//delete node
 	delete delPtr;
 
-    //TODO: update finger table
 	this->UpdateAllFingerTables();
 
 	std::cout << "PEER " << id << " REMOVED" << std::endl;
